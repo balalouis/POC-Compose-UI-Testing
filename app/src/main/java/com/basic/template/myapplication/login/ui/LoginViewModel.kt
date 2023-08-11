@@ -21,6 +21,7 @@ class LoginViewModel @Inject constructor(private var loginUseCases: LoginUseCase
 
     fun loginApiViewModel(loginRequestModel: LoginRequestModel) {
         viewModelScope.launch {
+            _uiState.value = LoginUiState.Loading
             loginUseCases.login(loginRequestModel)
                 .catch {
                     _uiState.value = LoginUiState.Error(it)

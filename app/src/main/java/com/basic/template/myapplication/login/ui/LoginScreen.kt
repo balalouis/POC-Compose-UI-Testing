@@ -2,13 +2,19 @@ package com.basic.template.myapplication.login.ui
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -16,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,8 +45,8 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     navController: NavController,
     onNavigateToRegister: (Int) -> Unit,
-    userName:MutableState<TextFieldValue>,
-    password:MutableState<TextFieldValue>,
+    userName: MutableState<TextFieldValue>,
+    password: MutableState<TextFieldValue>,
     loginViewModel: LoginViewModel
 ) {
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
@@ -54,8 +61,9 @@ fun LoginScreen(
         SignUp(onNavigateToRegister)
     }
 }
+
 @Composable
-fun LoginText(){
+fun LoginText() {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
         Text(
             text = stringResource(id = R.string.login), modifier = Modifier.padding(
@@ -107,10 +115,11 @@ fun LoginButton(
         LoginRequestModel(email = userName.value.text, password = password.value.text)
     val scope = rememberCoroutineScope()
     val uiState by loginViewModel.uiState.collectAsState()
-    if(uiState is LoginUiState.Success){
-        val token=(uiState as LoginUiState.Success).loginResponseModel?.token
-        Log.d("=====> ",""+token)
-        if(token?.isNotEmpty() == true) {
+    val snackBarHostState = remember { SnackbarHostState() }
+    if (uiState is LoginUiState.Success) {
+        val token = (uiState as LoginUiState.Success).loginResponseModel?.token
+        Log.d("=====> ", "" + token)
+        if (token?.isNotEmpty() == true) {
             LaunchedEffect(Unit) {
                 navController.navigate(HomeScreen.route) {
                     popUpTo(LoginScreen.route) {
@@ -118,7 +127,18 @@ fun LoginButton(
                     }
                 }
             }
+            LoginError(snackbarHostState = snackBarHostState)
+            LaunchedEffect(Unit){
+                snackBarHostState.showSnackbar("Hello world","Dummy", duration = SnackbarDuration.Long)
+            }
+
         }
+    } else if (uiState is LoginUiState.Error) {
+        Log.d("-----> ", "Error: ")
+        val snackBarHostState = remember { SnackbarHostState() }
+        LoginError(snackbarHostState = snackBarHostState)
+    } else if (uiState is LoginUiState.Loading) {
+        ProgressBar()
     }
     Button(
         onClick = {
@@ -135,6 +155,27 @@ fun LoginButton(
     ) {
         Text(text = stringResource(id = R.string.login))
     }
+}
+
+
+@Composable
+fun ProgressBar() {
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+fun LoginError() {
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    SnackbarHost(hostState = snackbarHostState, modifier = Modifier.fillMaxWidth(), snackbar = {
+        Snackbar {
+            Text(text = "Error")
+        }
+    })
 }
 
 @Composable
