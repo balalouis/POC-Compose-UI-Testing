@@ -28,3 +28,9 @@ object DetailScreen : ScreenDestination {
     override val route: String
         get() = "Detail"
 }
+
+object SampleScreen : ScreenDestination{
+    override val route: String
+        get() = "Sample"
+
+}
