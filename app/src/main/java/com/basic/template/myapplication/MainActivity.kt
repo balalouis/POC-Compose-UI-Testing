@@ -51,12 +51,12 @@ class MainActivity : ComponentActivity() {
 fun MyAppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = SplashScreen.route
+    startDestination: String = LoginScreen.route
 ) {
     NavHost(navController = navController, modifier = modifier, startDestination = startDestination){
-        composable(SplashScreen.route){
-            SplashScreen(navController)
-        }
+//        composable(SplashScreen.route){
+//            SplashScreen(navController)
+//        }
         composable(LoginScreen.route){
             val userName = remember {
                 mutableStateOf(TextFieldValue("eve.holt@reqres.in"))

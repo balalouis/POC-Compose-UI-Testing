@@ -127,7 +127,6 @@ fun LoginButton(
                     }
                 }
             }
-            LoginError(snackbarHostState = snackBarHostState)
             LaunchedEffect(Unit){
                 snackBarHostState.showSnackbar("Hello world","Dummy", duration = SnackbarDuration.Long)
             }
@@ -135,8 +134,6 @@ fun LoginButton(
         }
     } else if (uiState is LoginUiState.Error) {
         Log.d("-----> ", "Error: ")
-        val snackBarHostState = remember { SnackbarHostState() }
-        LoginError(snackbarHostState = snackBarHostState)
     } else if (uiState is LoginUiState.Loading) {
         ProgressBar()
     }
@@ -166,16 +163,6 @@ fun ProgressBar() {
     ) {
         CircularProgressIndicator()
     }
-}
-
-@Composable
-fun LoginError() {
-    val scaffoldState: ScaffoldState = rememberScaffoldState()
-    SnackbarHost(hostState = snackbarHostState, modifier = Modifier.fillMaxWidth(), snackbar = {
-        Snackbar {
-            Text(text = "Error")
-        }
-    })
 }
 
 @Composable
