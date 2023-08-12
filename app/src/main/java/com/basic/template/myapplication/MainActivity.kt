@@ -22,6 +22,7 @@ import com.basic.template.myapplication.login.ui.LoginViewModel
 import com.basic.template.myapplication.screen.HomeScreen
 import com.basic.template.myapplication.screen.LoginScreen
 import com.basic.template.myapplication.screen.RegisterScreen
+import com.basic.template.myapplication.screen.SampleScreen
 import com.basic.template.myapplication.screen.SplashScreen
 import com.basic.template.myapplication.ui.theme.MyApplicationTheme
 import com.basic.template.myapplication.userlist.ui.UserListScreen
@@ -51,7 +52,7 @@ class MainActivity : ComponentActivity() {
 fun MyAppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = LoginScreen.route
+    startDestination: String = SampleScreen.route
 ) {
     NavHost(navController = navController, modifier = modifier, startDestination = startDestination){
 //        composable(SplashScreen.route){
@@ -79,6 +80,9 @@ fun MyAppNavHost(
             UserListScreen(navController, userListViewModel)
         }
 
+        composable(SampleScreen.route){
+            SampleScreen()
+        }
 
     }
 
