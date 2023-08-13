@@ -4,7 +4,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,6 +25,7 @@ import com.basic.template.myapplication.screen.LoginScreen
 import com.basic.template.myapplication.screen.RegisterScreen
 import com.basic.template.myapplication.screen.SampleScreen
 import com.basic.template.myapplication.ui.theme.MyApplicationTheme
+import com.basic.template.myapplication.util.TestUITag
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -65,8 +68,13 @@ class LoginScreenTest {
     @Test
     fun testLoginUI() {
         launchLoginScreenNavGraph()
-        composeTestRule.onNodeWithText("Email").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Password").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(TestUITag.EMAIL_TAG, useUnmergedTree = true)
+            .assertTextEquals(composeTestRule.activity.resources.getString(R.string.email))
+        composeTestRule.onNodeWithTag(TestUITag.PASSWORD_TAG, useUnmergedTree = true)
+            .assertTextEquals(composeTestRule.activity.resources.getString(R.string.password))
+        composeTestRule
+            .onNodeWithTag(TestUITag.LOGIN_BUTTON_TAG)
+            .assertTextEquals(composeTestRule.activity.resources.getString(R.string.login))
     }
 
     private fun launchLoginScreenNavGraph() {

@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -38,6 +39,7 @@ import com.basic.template.myapplication.model.LoginRequestModel
 import com.basic.template.myapplication.model.LoginUiState
 import com.basic.template.myapplication.screen.HomeScreen
 import com.basic.template.myapplication.screen.LoginScreen
+import com.basic.template.myapplication.util.TestUITag
 import kotlinx.coroutines.launch
 
 
@@ -85,21 +87,33 @@ fun LoginTextFields(
         TextField(
             value = userName.value,
             onValueChange = { userName.value = it },
-            label = { Text(text = stringResource(id = R.string.email)) },
+            label = {
+                Text(
+                    text = stringResource(id = R.string.email),
+                    modifier = Modifier.testTag(TestUITag.EMAIL_TAG)
+                )
+            },
             singleLine = true,
             modifier = Modifier
                 .padding(all = dimensionResource(id = R.dimen.dp_8))
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .testTag(TestUITag.EMAIL_FIELD_TAG),
         )
 
         TextField(
             value = password.value,
             onValueChange = { password.value = it },
-            label = { Text(text = stringResource(id = R.string.password)) },
+            label = {
+                Text(
+                    text = stringResource(id = R.string.password),
+                    modifier = Modifier.testTag(TestUITag.PASSWORD_TAG)
+                )
+            },
             singleLine = true,
             modifier = Modifier
                 .padding(all = dimensionResource(id = R.dimen.dp_8))
                 .fillMaxWidth()
+                .testTag(TestUITag.PASSWORD_FILED_TAG)
         )
     }
 }
@@ -127,8 +141,12 @@ fun LoginButton(
                     }
                 }
             }
-            LaunchedEffect(Unit){
-                snackBarHostState.showSnackbar("Hello world","Dummy", duration = SnackbarDuration.Long)
+            LaunchedEffect(Unit) {
+                snackBarHostState.showSnackbar(
+                    "Hello world",
+                    "Dummy",
+                    duration = SnackbarDuration.Long
+                )
             }
 
         }
@@ -149,6 +167,7 @@ fun LoginButton(
                     id = R.dimen.dp_8
                 ), end = dimensionResource(id = R.dimen.dp_8)
             )
+            .testTag(TestUITag.LOGIN_BUTTON_TAG)
     ) {
         Text(text = stringResource(id = R.string.login))
     }
