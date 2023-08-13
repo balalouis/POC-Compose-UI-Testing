@@ -1,9 +1,13 @@
 package com.basic.template.myapplication
 
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,7 +17,10 @@ import com.basic.template.myapplication.api.ApiWebService
 import com.basic.template.myapplication.login.data.datasource.LoginDataSource
 import com.basic.template.myapplication.login.domain.repo.LoginRepo
 import com.basic.template.myapplication.login.domain.usecases.LoginUseCases
+import com.basic.template.myapplication.login.ui.LoginScreen
 import com.basic.template.myapplication.login.ui.LoginViewModel
+import com.basic.template.myapplication.screen.LoginScreen
+import com.basic.template.myapplication.screen.RegisterScreen
 import com.basic.template.myapplication.screen.SampleScreen
 import com.basic.template.myapplication.ui.theme.MyApplicationTheme
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -49,7 +56,14 @@ class LoginScreenTest {
     }
 
     @Test
-    fun testLoginUiViews() {
+    fun testSampleUiViews() {
+        launchLoginScreenNavGraph()
+        composeTestRule.onNodeWithText("Email").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Password").assertIsDisplayed()
+    }
+
+    @Test
+    fun testLoginUI() {
         launchLoginScreenNavGraph()
         composeTestRule.onNodeWithText("Email").assertIsDisplayed()
         composeTestRule.onNodeWithText("Password").assertIsDisplayed()
@@ -61,10 +75,29 @@ class LoginScreenTest {
                 navController = rememberNavController()
                 NavHost(
                     navController = navController as NavHostController,
-                    startDestination = SampleScreen.route
+                    startDestination = LoginScreen.route
                 ) {
                     composable(SampleScreen.route) {
                         SampleScreen()
+                    }
+
+                    composable(LoginScreen.route) {
+                        val userName = remember {
+                            mutableStateOf(TextFieldValue("eve.holt@reqres.in"))
+                        }
+                        val password = remember {
+                            mutableStateOf(TextFieldValue("cityslicka"))
+                        }
+                        val loginViewModelObj: LoginViewModel = hiltViewModel()
+
+                        LoginScreen(
+                            navController,
+                            onNavigateToRegister = { navController.navigate(RegisterScreen.route) },
+                            userName = userName,
+                            password = password,
+                            loginViewModel = loginViewModelObj
+                        )
+
                     }
                 }
             }
