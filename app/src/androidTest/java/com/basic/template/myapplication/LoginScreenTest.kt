@@ -8,6 +8,7 @@ import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -68,6 +69,7 @@ class LoginScreenTest {
     @Test
     fun testLoginUI() {
         launchLoginScreenNavGraph()
+        // UI is visible
         composeTestRule.onNodeWithTag(TestUITag.EMAIL_TAG, useUnmergedTree = true)
             .assertTextEquals(composeTestRule.activity.resources.getString(R.string.email))
         composeTestRule.onNodeWithTag(TestUITag.PASSWORD_TAG, useUnmergedTree = true)
@@ -75,6 +77,18 @@ class LoginScreenTest {
         composeTestRule
             .onNodeWithTag(TestUITag.LOGIN_BUTTON_TAG)
             .assertTextEquals(composeTestRule.activity.resources.getString(R.string.login))
+
+        // Typing the email and password
+        composeTestRule.onNodeWithTag(TestUITag.EMAIL_FIELD_TAG)
+            .performTextInput(composeTestRule.activity.resources.getString(R.string.test_user_email))
+        composeTestRule.onNodeWithTag(TestUITag.PASSWORD_FILED_TAG)
+            .performTextInput(composeTestRule.activity.resources.getString(R.string.test_user_password))
+
+        // Validating the UI after entering the text
+        composeTestRule.onNodeWithTag(TestUITag.EMAIL_FIELD_TAG, useUnmergedTree = true)
+            .assertTextEquals(composeTestRule.activity.resources.getString(R.string.test_user_email))
+        composeTestRule.onNodeWithTag(TestUITag.PASSWORD_FILED_TAG, useUnmergedTree = true)
+            .assertTextEquals(composeTestRule.activity.resources.getString(R.string.test_user_password))
     }
 
     private fun launchLoginScreenNavGraph() {
@@ -91,10 +105,10 @@ class LoginScreenTest {
 
                     composable(LoginScreen.route) {
                         val userName = remember {
-                            mutableStateOf(TextFieldValue("eve.holt@reqres.in"))
+                            mutableStateOf(TextFieldValue(""))
                         }
                         val password = remember {
-                            mutableStateOf(TextFieldValue("cityslicka"))
+                            mutableStateOf(TextFieldValue(""))
                         }
                         val loginViewModelObj: LoginViewModel = hiltViewModel()
 
