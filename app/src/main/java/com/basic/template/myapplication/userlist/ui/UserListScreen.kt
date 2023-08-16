@@ -23,19 +23,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.basic.template.myapplication.model.User
 import com.basic.template.myapplication.model.UserUIState
+import com.basic.template.myapplication.util.TestUITag
 
 @Composable
 fun UserListScreen(onNavController: NavController, userListViewModel: UserListViewModel) {
     LaunchedEffect(Unit) {userListViewModel.fetchUserListApiViaViewModel()}
     val uiState by userListViewModel.uiState.collectAsState()
     if(uiState is UserUIState.Success){
-        if((uiState as UserUIState.Success).userList?.size!! >0) {
+        if((uiState as UserUIState.Success).userList?.size!! > 0) {
             val list: List<User>? = (uiState as UserUIState.Success).userList
             if (list != null) {
                 UserListItem(userList = list, navController = onNavController)
@@ -46,9 +48,12 @@ fun UserListScreen(onNavController: NavController, userListViewModel: UserListVi
 
 @Composable
 fun UserListItem(userList: List<User>, navController: NavController){
-    LazyColumn{
-        items(userList) { user ->
-            UserMessageRow(user, onClick = {})
+    Column {
+        Text(text = "User List", modifier = Modifier.fillMaxWidth().testTag(TestUITag.LOGIN_BUTTON_TAG))
+        LazyColumn{
+            items(userList) { user ->
+                UserMessageRow(user, onClick = {})
+            }
         }
     }
 }
@@ -61,7 +66,9 @@ fun UserMessageRow(user: User, onClick:() -> Unit){
             .padding(vertical = 4.dp, horizontal = 8.dp)
             .clickable { onClick() }
     ){
-        Row(modifier = Modifier.padding(all = 8.dp).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier
+            .padding(all = 8.dp)
+            .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             AsyncImage(
                 model = user.userAvatar,
                 contentDescription = "Translated description of what the image contains",

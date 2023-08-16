@@ -16,7 +16,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "com.basic.template.myapplication.MyUITestRunner"
+        testInstrumentationRunner "com.basic.template.myapplication.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary true
         }

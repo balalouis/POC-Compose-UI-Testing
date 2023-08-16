@@ -52,13 +52,17 @@ class MainActivity : ComponentActivity() {
 fun MyAppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = SampleScreen.route
+    startDestination: String = LoginScreen.route
 ) {
-    NavHost(navController = navController, modifier = modifier, startDestination = startDestination){
+    NavHost(
+        navController = navController,
+        modifier = modifier,
+        startDestination = startDestination
+    ) {
 //        composable(SplashScreen.route){
 //            SplashScreen(navController)
 //        }
-        composable(LoginScreen.route){
+        composable(LoginScreen.route) {
             val userName = remember {
                 mutableStateOf(TextFieldValue("eve.holt@reqres.in"))
             }
@@ -75,12 +79,12 @@ fun MyAppNavHost(
 
         }
 
-        composable(HomeScreen.route){
+        composable(HomeScreen.route) {
             val userListViewModel: UserListViewModel = hiltViewModel()
             UserListScreen(navController, userListViewModel)
         }
 
-        composable(SampleScreen.route){
+        composable(SampleScreen.route) {
             SampleScreen()
         }
 

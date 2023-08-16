@@ -1,12 +1,11 @@
 package com.basic.template.myapplication.util
 
 object TestUITag {
-
-    const val EMAIL_TAG = "email"
-    const val PASSWORD_TAG = "password"
-    const val EMAIL_FIELD_TAG = "email_field"
-    const val PASSWORD_FILED_TAG = "password_field"
-    const val LOGIN_BUTTON_TAG = "login"
-    const val REGISTER_BUTTON_TAG = "register"
-
+    const val EMAIL_TAG = "EMAIL_TAG"
+    const val PASSWORD_TAG = "PASSWORD_TAG"
+    const val EMAIL_FIELD_TAG = "EMAIL_FIELD_TAG"
+    const val PASSWORD_FILED_TAG = "PASSWORD_FILED_TAG"
+    const val LOGIN_BUTTON_TAG = "LOGIN_BUTTON_TAG"
+    const val REGISTER_BUTTON_TAG = "REGISTER_BUTTON_TAG"
+    const val USER_LIST_TITLE = "USER_LIST_TITLE"
 }
