@@ -3,8 +3,10 @@ package com.basic.template.myapplication.login
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
@@ -69,7 +71,7 @@ class LoginScreenTest {
     }
 
     @Test
-    fun testLoginFlow() {
+    fun testLoginFlowViaUntil() {
         typeUserInput()
         composeTestRule.onNodeWithTag(TestUITag.LOGIN_BUTTON_TAG).performClick()
         composeTestRule.waitUntil(timeoutMillis = 6000) {
@@ -83,6 +85,21 @@ class LoginScreenTest {
                 .fetchSemanticsNodes().size == 1
         }
 
+    }
+
+    @OptIn(ExperimentalTestApi::class)
+    @Test
+    fun testLoginFlowViaUntilAdditional() {
+        typeUserInput()
+        composeTestRule.onNodeWithTag(TestUITag.LOGIN_BUTTON_TAG).performClick()
+        composeTestRule.waitUntilDoesNotExist(
+            hasTestTag(TestUITag.PROGRESS_BAR),
+            timeoutMillis = 6000
+        )
+        composeTestRule.waitUntilAtLeastOneExists(
+            hasTestTag(TestUITag.USER_LIST_TITLE),
+            timeoutMillis = 6000
+        )
     }
 
     private fun typeUserInput() {
