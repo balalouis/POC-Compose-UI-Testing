@@ -177,7 +177,9 @@ fun LoginButton(
 @Composable
 fun ProgressBar() {
     Box(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag(TestUITag.PROGRESS_BAR),
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator()

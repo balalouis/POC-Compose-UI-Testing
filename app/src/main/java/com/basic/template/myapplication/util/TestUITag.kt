@@ -8,4 +8,5 @@ object TestUITag {
     const val LOGIN_BUTTON_TAG = "LOGIN_BUTTON_TAG"
     const val REGISTER_BUTTON_TAG = "REGISTER_BUTTON_TAG"
     const val USER_LIST_TITLE = "USER_LIST_TITLE"
+    const val PROGRESS_BAR = "PROGRESS_BAR"
 }

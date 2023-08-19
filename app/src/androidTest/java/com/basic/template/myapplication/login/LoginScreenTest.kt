@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -23,10 +24,13 @@ import com.basic.template.myapplication.hilt.AppModule
 import com.basic.template.myapplication.hilt.NetworkModule
 import com.basic.template.myapplication.login.ui.LoginScreen
 import com.basic.template.myapplication.login.ui.LoginViewModel
+import com.basic.template.myapplication.screen.HomeScreen
 import com.basic.template.myapplication.screen.LoginScreen
 import com.basic.template.myapplication.screen.RegisterScreen
 import com.basic.template.myapplication.screen.SampleScreen
 import com.basic.template.myapplication.ui.theme.MyApplicationTheme
+import com.basic.template.myapplication.userlist.ui.UserListScreen
+import com.basic.template.myapplication.userlist.ui.UserListViewModel
 import com.basic.template.myapplication.util.TestUITag
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -68,8 +72,17 @@ class LoginScreenTest {
     fun testLoginFlow() {
         typeUserInput()
         composeTestRule.onNodeWithTag(TestUITag.LOGIN_BUTTON_TAG).performClick()
-        composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithTag(TestUITag.USER_LIST_TITLE).assertIsDisplayed()
+        composeTestRule.waitUntil(timeoutMillis = 6000) {
+            composeTestRule
+                .onAllNodesWithTag(TestUITag.PROGRESS_BAR)
+                .fetchSemanticsNodes().size == 1
+        }
+
+        composeTestRule.waitUntil(timeoutMillis = 4000) {
+            composeTestRule.onAllNodesWithTag(TestUITag.USER_LIST_TITLE)
+                .fetchSemanticsNodes().size == 1
+        }
+
     }
 
     private fun typeUserInput() {
@@ -128,6 +141,11 @@ class LoginScreenTest {
                             loginViewModel = loginViewModelObj
                         )
 
+                    }
+
+                    composable(HomeScreen.route) {
+                        val userListViewModel: UserListViewModel = hiltViewModel()
+                        UserListScreen(navController, userListViewModel)
                     }
                 }
             }

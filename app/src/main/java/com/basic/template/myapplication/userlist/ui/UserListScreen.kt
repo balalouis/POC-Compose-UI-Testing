@@ -49,7 +49,7 @@ fun UserListScreen(onNavController: NavController, userListViewModel: UserListVi
 @Composable
 fun UserListItem(userList: List<User>, navController: NavController){
     Column {
-        Text(text = "User List", modifier = Modifier.fillMaxWidth().testTag(TestUITag.LOGIN_BUTTON_TAG))
+        Text(text = "User List", modifier = Modifier.fillMaxWidth().testTag(TestUITag.USER_LIST_TITLE))
         LazyColumn{
             items(userList) { user ->
                 UserMessageRow(user, onClick = {})
