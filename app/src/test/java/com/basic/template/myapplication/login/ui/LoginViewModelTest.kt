@@ -17,15 +17,19 @@ class LoginViewModelTest {
 
     @Test
     fun testDefaultCall() {
-
+        // Arrange
         val fakeLoginDataSource = FakeLoginDataSource()
         val fakeLoginRepo = FakeLoginRepo(fakeLoginDataSource)
         val fakeLoginUseCases = LoginUseCases(fakeLoginRepo)
         loginViewModel = LoginViewModel(fakeLoginUseCases)
 
         val expectedUIState = LoginUiState.Success(TestDataUtil.getLoginResponseModel())
+
+        // Act
         loginViewModel.loginApiViewModel()
         coroutineTestRule.testDispatcher.scheduler.runCurrent()
+
+        // Assert
         val actualUiState = loginViewModel.uiState.value
         assert(expectedUIState == actualUiState)
     }
