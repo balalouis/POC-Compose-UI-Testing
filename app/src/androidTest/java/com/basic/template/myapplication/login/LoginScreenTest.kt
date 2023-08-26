@@ -70,23 +70,6 @@ class LoginScreenTest {
         loginUIValidation()
     }
 
-    @Test
-    fun testLoginFlowViaUntil() {
-        typeUserInput()
-        composeTestRule.onNodeWithTag(TestUITag.LOGIN_BUTTON_TAG).performClick()
-        composeTestRule.waitUntil(timeoutMillis = 6000) {
-            composeTestRule
-                .onAllNodesWithTag(TestUITag.PROGRESS_BAR)
-                .fetchSemanticsNodes().size == 1
-        }
-
-        composeTestRule.waitUntil(timeoutMillis = 4000) {
-            composeTestRule.onAllNodesWithTag(TestUITag.USER_LIST_TITLE)
-                .fetchSemanticsNodes().size == 1
-        }
-
-    }
-
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun testLoginFlowViaUntilAdditional() {

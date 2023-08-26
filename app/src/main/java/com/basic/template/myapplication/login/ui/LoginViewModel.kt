@@ -16,12 +16,15 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private var loginUseCases: LoginUseCases) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Success(LoginResponseModel("")))
+    private val _uiState =
+        MutableStateFlow<LoginUiState>(LoginUiState.Success(LoginResponseModel("")))
     val uiState: StateFlow<LoginUiState> = _uiState
+    private val defaultLoginRequestModel =
+        LoginRequestModel(email = "eve.holt@reqres.in", password = "cityslicka")
 
-    fun loginApiViewModel(loginRequestModel: LoginRequestModel) {
+    fun loginApiViewModel(loginRequestModel: LoginRequestModel = defaultLoginRequestModel) {
+        _uiState.value = LoginUiState.Loading
         viewModelScope.launch {
-            _uiState.value = LoginUiState.Loading
             loginUseCases.login(loginRequestModel)
                 .catch {
                     _uiState.value = LoginUiState.Error(it)
