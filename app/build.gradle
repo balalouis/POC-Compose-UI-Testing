@@ -49,9 +49,9 @@ android {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter'
     def nav_version = "2.5.3"
     def compose_version = "1.5.0"
+    def coroutines_test_version = '1.6.1'
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
@@ -98,4 +98,7 @@ dependencies {
 
     // Espresso
     implementation 'androidx.test.espresso:espresso-idling-resource:3.5.1'
+
+    // coroutines for test case
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test_version"
 }
