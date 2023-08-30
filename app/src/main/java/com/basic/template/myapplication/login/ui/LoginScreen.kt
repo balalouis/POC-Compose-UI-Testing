@@ -41,7 +41,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.basic.template.myapplication.R
 import com.basic.template.myapplication.model.LoginRequestModel
-import com.basic.template.myapplication.model.LoginUiState
+import com.basic.template.myapplication.model.LoginResponseModel
+import com.basic.template.myapplication.network.NetworkResult
 import com.basic.template.myapplication.screen.HomeScreen
 import com.basic.template.myapplication.screen.LoginScreen
 import com.basic.template.myapplication.util.TestUITag
@@ -138,8 +139,8 @@ fun LoginButton(
     val scope = rememberCoroutineScope()
     val uiState by loginViewModel.uiState.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
-    if (uiState is LoginUiState.Success) {
-        val token = (uiState as LoginUiState.Success).loginResponseModel?.token
+    if (uiState is NetworkResult.Success) {
+        val token = (uiState.data as LoginResponseModel).token
         Log.d("=====> ", "" + token)
         if (token?.isNotEmpty() == true) {
             LaunchedEffect(Unit) {
@@ -158,9 +159,9 @@ fun LoginButton(
             }
 
         }
-    } else if (uiState is LoginUiState.Error) {
+    } else if (uiState is NetworkResult.Failure) {
         Log.d("-----> ", "Error: ")
-    } else if (uiState is LoginUiState.Loading) {
+    } else if (uiState is NetworkResult.Loading) {
         ProgressBar()
     }
     Button(

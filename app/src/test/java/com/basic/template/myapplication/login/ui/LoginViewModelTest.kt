@@ -5,7 +5,7 @@ import com.basic.template.myapplication.TestDataUtil
 import com.basic.template.myapplication.fake.FakeLoginDataSource
 import com.basic.template.myapplication.fake.FakeLoginRepo
 import com.basic.template.myapplication.login.domain.usecases.LoginUseCases
-import com.basic.template.myapplication.model.LoginUiState
+import com.basic.template.myapplication.model.LoginResponseModel
 import org.junit.Rule
 import org.junit.Test
 
@@ -16,22 +16,38 @@ class LoginViewModelTest {
     private lateinit var loginViewModel: LoginViewModel
 
     @Test
-    fun testDefaultCall() {
+    fun testLoginSuccess() {
         // Arrange
-        val fakeLoginDataSource = FakeLoginDataSource()
+        val fakeLoginDataSource = FakeLoginDataSource(isApiSuccess = true)
         val fakeLoginRepo = FakeLoginRepo(fakeLoginDataSource)
         val fakeLoginUseCases = LoginUseCases(fakeLoginRepo)
         loginViewModel = LoginViewModel(fakeLoginUseCases)
 
-        val expectedUIState = LoginUiState.Success(TestDataUtil.getLoginResponseModel())
-
         // Act
+        val expectedData = TestDataUtil.getLoginSuccessResponse()
         loginViewModel.loginApiViewModel()
         coroutineTestRule.testDispatcher.scheduler.runCurrent()
 
         // Assert
-        val actualUiState = loginViewModel.uiState.value
-        assert(expectedUIState == actualUiState)
+        val actualUiData = loginViewModel.uiState.value.data as LoginResponseModel
+        assert(expectedData == actualUiData)
     }
 
+    @Test
+    fun testLoginFailure() {
+        // Arrange
+        val fakeLoginDataSource = FakeLoginDataSource(isApiSuccess = false)
+        val fakeLoginRepo = FakeLoginRepo(fakeLoginDataSource)
+        val fakeLoginUseCases = LoginUseCases(fakeLoginRepo)
+        loginViewModel = LoginViewModel(fakeLoginUseCases)
+
+        // Act
+        val expectedData = TestDataUtil.getFailureResponse()
+        loginViewModel.loginApiViewModel()
+        coroutineTestRule.testDispatcher.scheduler.runCurrent()
+
+        // Assert
+        val actualUiData = loginViewModel.uiState.value.message
+        assert(expectedData == actualUiData)
+    }
 }
