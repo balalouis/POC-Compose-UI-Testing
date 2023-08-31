@@ -37,13 +37,3 @@ data class UserListRoot(
     @SerializedName("data")
     var userModelList: List<User>? = null
 )
-
-data class SingleUser(@SerializedName("data") var user: User?) {
-    companion object
-
-}
-
-sealed class UserUIState {
-    data class Success(var userList: List<User>?) : UserUIState()
-    data class Failure(var exception: Throwable) : UserUIState()
-}

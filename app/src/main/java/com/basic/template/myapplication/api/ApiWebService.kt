@@ -14,7 +14,7 @@ interface ApiWebService {
     suspend fun loginApiCall(@Body loginRequestModel: LoginRequestModel): Response<LoginResponseModel>
 
     @GET("api/users?page=2")
-    suspend fun fetchUserList(): UserListRoot
+    suspend fun fetchUserList(): Response<UserListRoot>
 
     companion object {
         const val BASE_URL = "https://reqres.in/"

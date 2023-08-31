@@ -26,31 +26,36 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.basic.template.myapplication.model.User
-import com.basic.template.myapplication.model.UserUIState
+import com.basic.template.myapplication.model.UserListRoot
+import com.basic.template.myapplication.network.NetworkResult
 import com.basic.template.myapplication.util.TestUITag
 
 @Composable
-fun UserListScreen(onNavController: NavController, userListViewModel: UserListViewModel) {
-    LaunchedEffect(Unit) {userListViewModel.fetchUserListApiViaViewModel()}
+fun UserListScreen(userListViewModel: UserListViewModel) {
+    LaunchedEffect(Unit) { userListViewModel.fetchUserListApiViaViewModel() }
     val uiState by userListViewModel.uiState.collectAsState()
-    if(uiState is UserUIState.Success){
-        if((uiState as UserUIState.Success).userList?.size!! > 0) {
-            val list: List<User>? = (uiState as UserUIState.Success).userList
-            if (list != null) {
-                UserListItem(userList = list, navController = onNavController)
-            }
+    if (uiState is NetworkResult.Success) {
+        val userListRoot = (uiState.data as UserListRoot)
+        if (userListRoot.userModelList != null && userListRoot.userModelList?.size!! > 0) {
+            UserListItem(
+                userList = userListRoot.userModelList!!
+            )
         }
     }
 }
 
 @Composable
-fun UserListItem(userList: List<User>, navController: NavController){
+fun UserListItem(userList: List<User>) {
     Column {
-        Text(text = "User List", modifier = Modifier.fillMaxWidth().testTag(TestUITag.USER_LIST_TITLE))
-        LazyColumn{
+        Text(
+            text = "User List",
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag(TestUITag.USER_LIST_TITLE)
+        )
+        LazyColumn {
             items(userList) { user ->
                 UserMessageRow(user, onClick = {})
             }
@@ -59,16 +64,18 @@ fun UserListItem(userList: List<User>, navController: NavController){
 }
 
 @Composable
-fun UserMessageRow(user: User, onClick:() -> Unit){
+fun UserMessageRow(user: User, onClick: () -> Unit) {
 
     Card(
         modifier = Modifier
             .padding(vertical = 4.dp, horizontal = 8.dp)
             .clickable { onClick() }
-    ){
-        Row(modifier = Modifier
-            .padding(all = 8.dp)
-            .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(all = 8.dp)
+                .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+        ) {
             AsyncImage(
                 model = user.userAvatar,
                 contentDescription = "Translated description of what the image contains",

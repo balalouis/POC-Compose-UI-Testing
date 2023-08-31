@@ -23,7 +23,6 @@ import com.basic.template.myapplication.screen.HomeScreen
 import com.basic.template.myapplication.screen.LoginScreen
 import com.basic.template.myapplication.screen.RegisterScreen
 import com.basic.template.myapplication.screen.SampleScreen
-import com.basic.template.myapplication.screen.SplashScreen
 import com.basic.template.myapplication.ui.theme.MyApplicationTheme
 import com.basic.template.myapplication.userlist.ui.UserListScreen
 import com.basic.template.myapplication.userlist.ui.UserListViewModel
@@ -81,7 +80,7 @@ fun MyAppNavHost(
 
         composable(HomeScreen.route) {
             val userListViewModel: UserListViewModel = hiltViewModel()
-            UserListScreen(navController, userListViewModel)
+            UserListScreen(userListViewModel)
         }
 
         composable(SampleScreen.route) {

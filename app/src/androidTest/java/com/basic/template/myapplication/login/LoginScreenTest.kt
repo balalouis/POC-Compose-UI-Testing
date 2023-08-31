@@ -8,7 +8,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -145,7 +144,7 @@ class LoginScreenTest {
 
                     composable(HomeScreen.route) {
                         val userListViewModel: UserListViewModel = hiltViewModel()
-                        UserListScreen(navController, userListViewModel)
+                        UserListScreen(userListViewModel)
                     }
                 }
             }
