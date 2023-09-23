@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.ManagedVirtualDevice
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -29,7 +31,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug{
+        debug {
             testCoverageEnabled true
         }
     }
@@ -49,6 +51,19 @@ android {
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+
+    testOptions {
+        managedDevices {
+            devices {
+                pixel2api30 (ManagedVirtualDevice) {
+                    // Use device profiles you typically see in Android Studio.
+                    device = "Pixel 2"
+                    apiLevel = 30
+                    systemImageSource = "google"
+                }
+            }
         }
     }
 }
@@ -84,7 +99,7 @@ dependencies {
     // Retrofit Library's
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    implementation ('com.squareup.picasso:picasso:2.71828')
+    implementation('com.squareup.picasso:picasso:2.71828')
 
     // Coil
     implementation("io.coil-kt:coil-compose:2.4.0")
@@ -106,4 +121,27 @@ dependencies {
 
     // coroutines for test case
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test_version"
+}
+
+tasks.register('helloworld') {
+    println 'Hello Apple'
+}
+
+tasks.register('myCustomMeenuTask') {
+    dependsOn('test')
+    dependsOn('helloworld')
+}
+//
+//tasks.configureEach { task ->
+//    if(task.name == "assembleDebug") {
+//        task.finalizedBy "myCustomMeenuTask"
+//    }
+//}
+
+task runAVD(type: Exec) {
+    def adbCommand = ["emulator","-avd", "Pixel 2 API 30"]
+    commandLine adbCommand
+    doLast {
+        println "Some test text"
+    }
 }
