@@ -55,14 +55,19 @@ android {
     }
 
     testOptions {
-        managedDevices {
-            devices {
-                pixel2api30 (ManagedVirtualDevice) {
-                    // Use device profiles you typically see in Android Studio.
-                    device = "Pixel 2"
-                    apiLevel = 30
-                    systemImageSource = "google"
-                }
+        emulatorSnapshots {
+            enableForTestFailures = true
+        }
+        devices {
+            pixel2api30(ManagedVirtualDevice) {
+                device = "Pixel 2"
+                apiLevel = 30
+                systemImageSource = "aosp-atd"
+            }
+        }
+        deviceGroups {
+            phoneAndTablet {
+                targetDevices.addAll(devices.pixel2api30)
             }
         }
     }
