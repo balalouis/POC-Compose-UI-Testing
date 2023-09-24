@@ -7,6 +7,7 @@ plugins {
     id 'com.google.dagger.hilt.android'
     id 'jacoco'
     id 'org.sonarqube'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -74,6 +75,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-auth-ktx:22.1.2'
     def nav_version = "2.7.2"
     def compose_version = "1.5.1"
     def coroutines_test_version = '1.6.1'
