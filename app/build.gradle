@@ -63,7 +63,7 @@ android {
             pixel2api30(ManagedVirtualDevice) {
                 device = "Pixel 2"
                 apiLevel = 30
-                systemImageSource = "aosp-atd"
+                systemImageSource = "google"
             }
         }
         deviceGroups {
@@ -144,11 +144,3 @@ tasks.register('myCustomMeenuTask') {
 //        task.finalizedBy "myCustomMeenuTask"
 //    }
 //}
-
-task runAVD(type: Exec) {
-    def adbCommand = ["emulator","-avd", "Pixel 2 API 30"]
-    commandLine adbCommand
-    doLast {
-        println "Some test text"
-    }
-}
