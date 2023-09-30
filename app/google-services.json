@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1055984574746",
+    "project_id": "poc-gradle-managed-device",
+    "storage_bucket": "poc-gradle-managed-device.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055984574746:android:09d3b07d9eee7acd220ca3",
+        "android_client_info": {
+          "package_name": "com.basic.template.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK0i0lpotNUZ4WBUNDcTVYTH2sHN5fyEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
