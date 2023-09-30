@@ -60,15 +60,15 @@ android {
             enableForTestFailures = true
         }
         devices {
-            pixel2api30(ManagedVirtualDevice) {
-                device = "Pixel 2"
+            pixel4api30(ManagedVirtualDevice) {
+                device = "Pixel 4"
                 apiLevel = 30
-                systemImageSource = "google"
+                systemImageSource = "aosp-atd"
             }
         }
         deviceGroups {
             phoneAndTablet {
-                targetDevices.addAll(devices.pixel2api30)
+                targetDevices.addAll(devices.pixel4api30)
             }
         }
     }
