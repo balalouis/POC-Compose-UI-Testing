@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.ManagedVirtualDevice
-
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -52,24 +50,6 @@ android {
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
-    }
-
-    testOptions {
-        emulatorSnapshots {
-            enableForTestFailures = true
-        }
-        devices {
-            pixel4api30(ManagedVirtualDevice) {
-                device = "Pixel 4"
-                apiLevel = 30
-                systemImageSource = "aosp-atd"
-            }
-        }
-        deviceGroups {
-            phoneAndTablet {
-                targetDevices.addAll(devices.pixel4api30)
-            }
         }
     }
 }
