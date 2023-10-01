@@ -99,7 +99,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: technote-space/workflow-conclusion-action@v1
-      - uses: 8398a7/action-slack@v3
         with:
           status: ${{ env.WORKFLOW_CONCLUSION }}
           fields: commit,ref,workflow,eventName
@@ -108,7 +107,6 @@ jobs:
           username: "Feature Branch Build Status"
           text: |
             ${{ env.WORKFLOW_CONCLUSION }}:
-            https://github.com/n8ebel/GitHubActionsAutomationSandbox/actions/runs/${{ github.run_id }}
+            https://github.com/balalouis/POC-Compose-UI-Testing/actions/runs/${{ github.run_id }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
