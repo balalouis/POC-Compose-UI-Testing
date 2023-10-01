@@ -16,8 +16,8 @@ android {
         applicationId "com.basic.template.myapplication"
         minSdk 24
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        versionCode getUniqueVersionCode()
+        versionName getUserVisibleVersionName()
 
         testInstrumentationRunner "com.basic.template.myapplication.HiltTestRunner"
         vectorDrawables {

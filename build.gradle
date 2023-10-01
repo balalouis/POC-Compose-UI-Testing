@@ -32,6 +32,8 @@ plugins {
     id 'com.google.gms.google-services' version "4.3.15" apply false
 }
 
+apply from: 'app-versioning.gradle'
+
 tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
