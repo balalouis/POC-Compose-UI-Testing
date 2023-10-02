@@ -4,6 +4,8 @@ on:
   push:
     branches: 'feature/**'
 
+    workflow_dispatch:
+
 jobs:
   test_job:
     name: Test
