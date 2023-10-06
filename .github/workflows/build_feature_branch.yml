@@ -121,8 +121,9 @@ jobs:
 
   generate_and_upload_apk:
     needs: [ test_job, lint_job ]
-    name: Assemble and Upload to Firebase
-    runs-on: ubuntu-latest
+    name: Generate and Upload apk to Firebase
+    runs-on: macos-latest
+    continue-on-error: true
     steps:
 
       - name: Checkout
