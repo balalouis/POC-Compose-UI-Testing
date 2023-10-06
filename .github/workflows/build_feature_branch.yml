@@ -188,17 +188,12 @@ jobs:
         with:
           name: app-debug-androidTest
 
-      - name: Login to Google Cloud
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      - name: Run Android tests on Firebase Test Lab
+        uses: asadmansr/Firebase-Test-Lab-Action@v1.0
         with:
-          version: '270.0.0'
-          service_account_key: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-
-      - name: Set current project
-        run: gcloud config set project ${{ secrets.FIREBASE_APP_ID }}
-
-      - name: Run Instrumentation Tests in Firebase Test Lab
-        run: gcloud firebase test android run --type instrumentation --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=Pixel5,version=30,locale=pl,orientation=portrait
+          arg-spec: 'tests.yml:android-pixel-4'
+          env:
+            SERVICE_ACCOUNT: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
 
   notification_job:
     needs: [ test_job, lint_job, assemble_distribute_job ]
