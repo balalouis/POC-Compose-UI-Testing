@@ -173,7 +173,7 @@ jobs:
   firebase:
     name: Run UI tests with Firebase Test Lab
     needs: generate_and_upload_apk
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
@@ -198,7 +198,7 @@ jobs:
         run: gcloud config set project ${{ secrets.FIREBASE_APP_ID }}
 
       - name: Run Instrumentation Tests in Firebase Test Lab
-        run: gcloud firebase test android run --type instrumentation --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=Pixel2,version=28,locale=pl,orientation=portrait
+        run: gcloud firebase test android run --type instrumentation --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=Pixel5,version=30,locale=pl,orientation=portrait
 
   notification_job:
     needs: [ test_job, lint_job, assemble_distribute_job ]
