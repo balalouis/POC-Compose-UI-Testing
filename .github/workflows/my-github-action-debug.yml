@@ -44,8 +44,8 @@ jobs:
           name: lint-report
           path: '**/build/reports/lint-results-*'
 
-  test_job:
-    name: Test
+  unit_test_job:
+    name: Unit Test
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -158,7 +158,7 @@ jobs:
           path: app/build/outputs/apk/debug/**.apk
 
   notification_job:
-    needs: [ test_job, lint_job, assemble_job ]
+    needs: [ lint_job, unit_test_job, android_test_job, assemble_job ]
     name: Notify Build Status
     runs-on: ubuntu-latest
     steps:
