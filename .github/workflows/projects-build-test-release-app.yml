@@ -158,6 +158,7 @@ jobs:
           path: app/build/outputs/apk/debug/**.apk
 
   firebase_test_lab:
+    needs: [ lint_job, unit_test_job, android_test_job, assemble_job ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -237,7 +238,7 @@ jobs:
           file: app/build/outputs/apk/debug/app-debug.apk
 
   notification_job:
-    needs: [ lint_job, unit_test_job, android_test_job, assemble_job, firebase_test_lab ]
+    needs: [ firebase_distribute_job ]
     name: Notify Build Status
     runs-on: ubuntu-latest
     steps:
