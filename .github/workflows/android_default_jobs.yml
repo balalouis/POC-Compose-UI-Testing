@@ -1,4 +1,4 @@
-name: My github action learnings
+name: Android default CI/CD Jobs
 
 on:
   push:

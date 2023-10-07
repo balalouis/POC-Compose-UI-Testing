@@ -1,16 +1,16 @@
-name: My github action learnings
+name: Build Feature Branch
 
 on:
   push:
-    branches: [ "master" ]
+    branches: 'feature/**'
 
-  workflow_dispatch:
+    workflow_dispatch:
 
 jobs:
+
   lint_job:
     name: Lint
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
 
       - name: Checkout
@@ -47,7 +47,6 @@ jobs:
   unit_test_job:
     name: Unit Test
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
 
       - name: Checkout
@@ -108,23 +107,33 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Assemble
+        env:
+          VERSION_CODE: ${{ github.run_id }}
+        run: ./gradlew assembleDebug
+
+      - name: Upload app APK
+        uses: actions/upload-artifact@v1
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+
       - name: Run Android Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
           script: ./gradlew connectedDebugAndroidTest
 
-      - name: Upload Android Test Reports
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2
+      - name: Upload Android Test APK
+        uses: actions/upload-artifact@v1
         with:
-          name: android-test-reports
-          path: '**/build/reports/androidTests/'
+          name: app-debug-androidTest
+          path: app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 
-  assemble_job:
-    name: Assemble
+  firebase_distribute_job:
+    needs: [ lint_job, unit_test_job, android_test_job ]
+    name: Assemble and Upload to Firebase
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
 
       - name: Checkout
@@ -148,17 +157,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Assemble Debug
+      - name: Assemble
+        env:
+          VERSION_CODE: ${{ github.run_id }}
         run: ./gradlew assembleDebug
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
+      - name: Upload to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          name: apk
-          path: app/build/outputs/apk/debug/**.apk
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: QA
+          file: app/build/outputs/apk/debug/app-debug.apk
 
   notification_job:
-    needs: [ lint_job, unit_test_job, android_test_job, assemble_job ]
+    needs: [ firebase_distribute_job ]
     name: Notify Build Status
     runs-on: ubuntu-latest
     steps:
@@ -168,7 +181,7 @@ jobs:
           fields: commit,ref,workflow,eventName
           author_name: ${{ github.actor }}
           icon_emoji: ':robot_face:'
-          username: "Pull Request Build Status"
+          username: "Feature Branch Build Status"
           text: |
             ${{ env.WORKFLOW_CONCLUSION }}:
             https://github.com/balalouis/POC-Compose-UI-Testing/actions/runs/${{ github.run_id }}
