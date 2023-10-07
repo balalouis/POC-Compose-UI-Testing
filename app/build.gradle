@@ -13,39 +13,27 @@ android {
     compileSdk 34
 
     def versionPropsFile = file('version.properties')
-    def versionBuild
+    def name = "1.0.6"
+    def code = 3
 
     if (versionPropsFile.canRead()) {
         Properties versionProps = new Properties()
-        versionProps.load(new FileInputStream(versionPropsFile))
-        versionBuild = versionProps['VERSION_CODE'].toInteger()
-    } else {
-        throw new FileNotFoundException("Could not read version.properties!")
-    }
 
-    ext.autoIncrementBuildNumber = {
-        if (versionPropsFile.canRead()) {
-            Properties versionProps = new Properties()
-            versionProps.load(new FileInputStream(versionPropsFile))
-            versionBuild = versionProps['VERSION_CODE'].toInteger() + 1
-            versionProps['VERSION_CODE'] = versionBuild.toString()
-            versionProps.store(versionPropsFile.newWriter(), null)
-        } else {
-            throw new FileNotFoundException("Could not read version.properties!")
-        }
-    }
-    gradle.taskGraph.whenReady { taskGraph ->
-        if (taskGraph.hasTask(assembleDebug)) {
-            autoIncrementBuildNumber()
-        }
+        versionProps.load(new FileInputStream(versionPropsFile))
+        name = versionProps['VERSION_NAME']
+        code = versionProps['VERSION_CODE'].toInteger() + 1
+        versionProps['VERSION_CODE'] = code.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+    } else {
+        throw new GradleException("Could not read version.properties!")
     }
 
     defaultConfig {
         applicationId "com.basic.template.myapplication"
         minSdk 24
         targetSdk 34
-        versionCode versionBuild
-        versionName "1.0"
+        versionCode code
+        versionName name
 
         testInstrumentationRunner "com.basic.template.myapplication.HiltTestRunner"
         vectorDrawables {
