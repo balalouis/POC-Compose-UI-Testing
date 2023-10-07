@@ -194,7 +194,7 @@ jobs:
           service_account_key: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
 
       - name: Set current project
-        run: gcloud config set project ${{ secrets.RUN_PROJECT }}
+        run: gcloud config set project {{ env.PROJECT_ID }}
 
       - name: Run Instrumentation Tests in Firebase Test Lab
         run: gcloud firebase test android run --type instrumentation --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=Pixel2,version=28,locale=en,orientation=portrait
