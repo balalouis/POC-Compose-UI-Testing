@@ -47,7 +47,7 @@ jobs:
           SERVICE_ACCOUNT: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
 
   firebase_distribute_job:
-    needs: [ lint_job, unit_test_job, android_test_job ]
+    needs: [ firebase_test_lab ]
     name: Assemble and Upload to Firebase
     runs-on: ubuntu-latest
     steps:
@@ -87,7 +87,7 @@ jobs:
           file: app/build/outputs/apk/debug/app-debug.apk
 
   notification_job:
-    needs: [ firebase_test_lab, firebase_distribute_job ]
+    needs: [ firebase_distribute_job ]
     name: Notify Build Status
     runs-on: ubuntu-latest
     steps:
