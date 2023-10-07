@@ -171,7 +171,7 @@ jobs:
           file: app/build/outputs/apk/debug/app-debug.apk
 
   notification_job:
-    needs: [ test_job, lint_job, firebase_distribute_job ]
+    needs: [ firebase_distribute_job ]
     name: Notify Build Status
     runs-on: ubuntu-latest
     steps:
