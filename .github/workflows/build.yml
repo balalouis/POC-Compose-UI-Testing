@@ -1,4 +1,4 @@
-name: Run unit test and Instrumented Tests on Firebase Test Lab
+name: Sample build check up
 
 on:
   push:
