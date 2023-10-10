@@ -47,6 +47,18 @@ jobs:
           name: test-reports
           path: '**/build/reports/tests/'
 
+      - name: Run Coverage
+        run: ./gradlew testCoverage
+
+      - name: Add coverage to PR
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.6.1
+        with:
+          paths: |
+            ${{ github.workspace }}/**/build/reports/jacoco/prodNormalDebugCoverage/prodNormalDebugCoverage.xml,
+            ${{ github.workspace }}/**/build/reports/jacoco/**/debugCoverage.xml
+            token: ${{ secrets.GITHUB_TOKEN }}    
+
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
