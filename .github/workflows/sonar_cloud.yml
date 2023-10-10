@@ -37,18 +37,25 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      - name: Run Debug Tests
-        run: ./gradlew testDebugUnitTest --continue
+      - name: Run tests
+        run: ./gradlew test
 
-      - name: Upload Test Reports
-        if: ${{ always() }}
+      - name: Upload test report
         uses: actions/upload-artifact@v2
         with:
-          name: test-reports
-          path: '**/build/reports/tests/'
+          name: unit_test_report
+          path: app/build/reports/tests/testDebugUnitTest/
 
-      - name: Build and analyze
+      - name: SonarCloud Scan
+        run: ./gradlew app:sonarqube -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonar --info
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build debug APK
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: expense-manager.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
