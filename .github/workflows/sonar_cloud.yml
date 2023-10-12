@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     name: Build and analyze
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
 
       - uses: actions/checkout@v3
@@ -37,15 +37,19 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      - name: Run Debug Tests
-        run: ./gradlew testDebugUnitTest --continue
+      # Execute unit tests
+      - name: Unit Test with Android Emulator Runner
+        uses: ReactiveCircus/android-emulator-runner@v2.14.3
+        with:
+          api-level: 29
+          script: ./gradlew connectedCheck
 
       - name: Upload Test Reports
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
           name: test-reports
-          path: '**/build/reports/tests/'
+          path: 'app/build/reports/coverage/debug'
 
       - name: Build and analyze
         env:
