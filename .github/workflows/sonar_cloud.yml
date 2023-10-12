@@ -49,7 +49,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: test-reports
-          path: 'app/build/reports/coverage/debug'
+          file: 'app/build/reports/coverage/debug'
 
       - name: Build and analyze
         env:
