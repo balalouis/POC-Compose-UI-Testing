@@ -12,7 +12,7 @@ buildscript {
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.44'
 
         // sonar qube
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:4.3.1.3277"
 
         //Jacoco Plugin
         classpath "org.jacoco:org.jacoco.core:0.8.8"
