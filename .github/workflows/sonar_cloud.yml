@@ -37,9 +37,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      - name: Build App with Gradle
-        run: ./gradlew testDebugUnitTest
-
       # Execute unit tests
       - name: Unit Test with Android Emulator Runner
         uses: ReactiveCircus/android-emulator-runner@v2.14.3
