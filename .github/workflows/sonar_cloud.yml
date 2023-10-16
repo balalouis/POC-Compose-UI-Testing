@@ -44,18 +44,12 @@ jobs:
           api-level: 29
           script: ./gradlew connectedCheck
 
-      - name: generate report
+      - name: Upload Test Reports
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
-          name: report
-          path: app/build/reports/coverage/debug
-
-#      - name: Upload Test Reports
-#        if: ${{ always() }}
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: test-reports
-#          path: 'app/build/reports/coverage/androidTest/debug/connected'
+          name: test-reports
+          path: 'app/build/reports/coverage/androidTest/debug/connected'
 
       - name: Build and analyze
         env:
