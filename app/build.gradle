@@ -85,6 +85,7 @@ dependencies {
     def nav_version = "2.7.2"
     def compose_version = "1.5.1"
     def coroutines_test_version = '1.6.1'
+    def leakCanaryVersion = '2.12'
 
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
@@ -141,6 +142,10 @@ dependencies {
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics-ktx")
+
+    // Leak canary
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}"
+    androidTestImplementation "com.squareup.leakcanary:leakcanary-android-instrumentation:${leakCanaryVersion}"
 
 }
 
