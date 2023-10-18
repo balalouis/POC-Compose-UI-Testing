@@ -12,7 +12,7 @@ buildscript {
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.44'
 
         // sonar qube
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:4.3.1.3277"
 
         //Jacoco Plugin
         classpath "org.jacoco:org.jacoco.core:0.8.8"
@@ -30,6 +30,31 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.7.20' apply false
     id 'com.google.dagger.hilt.android' version '2.44' apply false
     id 'com.google.gms.google-services' version "4.3.15" apply false
+    id "org.sonarqube" version "4.3.1.3277"
+}
+
+sonar {
+    properties {
+        property "sonar.projectKey", "balalouis_POC-Compose-UI-Testing"
+        property "sonar.organization", "balalouis"
+        property "sonar.host.url", "https://sonarcloud.io"
+
+        property "sonar.sources", "src/main/java"
+        property "sonar.binaries", "build/intermediates/classes/debug"
+        property "sonar.java.binaries", "build/intermediates/classes/debug"
+        property "sonar.tests", "src/test/java, src/androidTest/java"
+        property "sonar.java.test.binaries", "build/intermediates/classes/debug"
+
+        def unit = fileTree(dir: project.projectDir, includes: ['**/*.exec']).files;
+        def ui = fileTree(dir: project.projectDir, includes: ['**/*.ec']).files;
+        unit.addAll(ui);
+        def files = unit.join(", ");
+
+        property "sonar.jacoco.reportPaths", files
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.junit.reportsPath", "build/test-results/testDebugUnitTest"
+        property "sonar.android.lint.report", "build/reports/lint-results.xml"
+    }
 }
 
 apply from: 'app-versioning.gradle'
