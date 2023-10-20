@@ -43,7 +43,7 @@ android {
 
     testOptions {
         unitTests.all {
-            jacoco{
+            jacoco {
                 includeNoLocationClasses = true
                 excludes = ['jdk.internal.*']
             }
@@ -144,8 +144,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
 
     // Leak canary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}"
-    androidTestImplementation "com.squareup.leakcanary:leakcanary-android-instrumentation:${leakCanaryVersion}"
+    debugImplementation ("com.squareup.leakcanary:leakcanary-android:2.12")
+    androidTestImplementation ("com.squareup.leakcanary:leakcanary-android-instrumentation:2.12")
 
 }
 

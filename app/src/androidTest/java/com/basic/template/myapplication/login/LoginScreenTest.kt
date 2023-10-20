@@ -36,6 +36,9 @@ import com.basic.template.myapplication.util.TestUITag
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import leakcanary.DetectLeaksAfterTestSuccess
+import leakcanary.LeakAssertions
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -50,12 +53,20 @@ class LoginScreenTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
+    @get:Rule
+    val rule = DetectLeaksAfterTestSuccess()
+
     private lateinit var navController: NavController
 
     @Before
     fun setUp() {
         hiltTestRule.inject()
         launchLoginScreenNavGraph()
+    }
+
+    @After
+    fun stop(){
+        LeakAssertions.assertNoLeaks()
     }
 
     @Test
